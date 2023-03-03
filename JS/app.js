@@ -61,7 +61,7 @@ const displayData = (data) => {
     
                 </div>
                 <div>
-                    <button onclick="modalDetails('${
+                    <button onclick="itemDetails('${
                       element.id
                     }')" class="arrow-btn" data-bs-toggle="modal"
                         data-bs-target="#exampleModal"><i class="fa-solid fa-arrow-right-long"></i></button>
@@ -87,4 +87,87 @@ document.getElementById("see-more-btn").addEventListener("click", function () {
   };
   seeMoreBtn();
 });
+const itemDetails = (id) => {
+    const url = `https://openapi.programming-hero.com/api/ai/tool/${id}`
+    fetch(url)
+        .then(res => res.json())
+        .then(data => modalData(data.data))
+}
+const modalData = (modalData) => {
+    const leftCard = document.getElementById('left-card')
+    leftCard.innerText = modalData.description;
+    const rightCard = document.getElementById('right-card')
+    rightCard.innerHTML = `
+    <img src="${modalData.image_link[0] ? modalData.image_link[0] : 'Not Found Image'}" class="card-img-top rounded" alt="...">
+        <div class="accuracy">
+            ${modalData.accuracy.score * 100 > 80 ? '<button class="btn btn-success">Accuracy: ' + modalData.accuracy.score * 100 +
+                '%</button>' : '<button class="btn btn-danger">Accuracy Low</button>'
+            }
+
+        </div>
+        <div class="card-body">
+            <h5 class="card-title text-center">${modalData.input_output_examples[0].input}</h5>
+            <p class="card-text text-center">${modalData.input_output_examples[0].output}</p>
+
+        </div>
+
+    `
+    const priceItem= document.getElementById('price')
+    priceItem.innerHTML = `
+            <div class="col">
+                <div class="card py-3">
+                    <div class="card-body p-4  p-lg-1 text-center">
+                        <h5 class="card-title text-success">${modalData.pricing[0].price}</h5>
+                        <h5 class="card-title text-success">${modalData.pricing[0].plan}</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card py-3">
+                    <div class="card-body p-4  p-lg-1 text-center">
+                        <h5 class="card-title text-warning">${modalData.pricing[1].price}</h5>
+                        <h5 class="card-title text-warning">${modalData.pricing[1].plan}</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card py-1">
+                     <div class="card-body p-4 p-lg-1 text-center">
+                         <h5 class="card-title text-danger">${modalData.pricing[2].price}</h5>
+                         <h5 class="card-title text-danger">${modalData.pricing[2].plan}</h5>
+                    </div>
+                </div>
+            </div>
+    `
+    const feature = document.getElementById('feature')
+    feature.innerHTML = `
+                    <div class="col">
+                        <div class="card">
+                             <div class="card-body p-1">
+                                <h2 class="card-title fw-bold">Feature</h2>
+                                <ul>
+                                    <li>${modalData.features[1].feature_name} </li>
+                                    <li>${modalData.features[2].feature_name} </li>
+                                    <li>${modalData.features[3].feature_name} </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body p-1 feature">
+                                <h2 class="card-title fw-bold">Integration</h2>
+                                 <ul>
+                                    <li>${modalData.integrations[0] ? modalData.integrations[0] : '<b class="text-danger">No Data Found</b>'} </li>
+                                    <li>${modalData.integrations[1] ? modalData.integrations[1] : '<b class="text-danger">No Data Found</b>'} </li>
+                                     <li>${modalData.integrations[2] ? modalData.integrations[2] : '<b class="text-danger">No Data Found</b>'} </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+    `
+}
 loadData();
