@@ -1,5 +1,6 @@
 // load data from api
 const loadData = async () => {
+    toggleSpinner(true);
   const url = `https://openapi.programming-hero.com/api/ai/tools`;
   try {
     const res = await fetch(url);
@@ -69,7 +70,8 @@ const displayData = (data) => {
             </div>
         </div>`;
 
-    divContainer.appendChild(div);
+      divContainer.appendChild(div);
+      toggleSpinner(false);
   });
 };
 
