@@ -88,32 +88,42 @@ document.getElementById("see-more-btn").addEventListener("click", function () {
   seeMoreBtn();
 });
 const itemDetails = (id) => {
-    const url = `https://openapi.programming-hero.com/api/ai/tool/${id}`
-    fetch(url)
-        .then(res => res.json())
-        .then(data => modalData(data.data))
-}
+  const url = `https://openapi.programming-hero.com/api/ai/tool/${id}`;
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => modalData(data.data));
+};
 const modalData = (modalData) => {
-    const leftCard = document.getElementById('left-card')
-    leftCard.innerText = modalData.description;
-    const rightCard = document.getElementById('right-card')
-    rightCard.innerHTML = `
-    <img src="${modalData.image_link[0] ? modalData.image_link[0] : 'Not Found Image'}" class="card-img-top rounded" alt="...">
+  const leftCard = document.getElementById("left-card");
+  leftCard.innerText = modalData.description;
+  const rightCard = document.getElementById("right-card");
+  rightCard.innerHTML = `
+    <img src="${
+      modalData.image_link[0] ? modalData.image_link[0] : "Not Found Image"
+    }" class="card-img-top rounded" alt="...">
         <div class="accuracy">
-            ${modalData.accuracy.score * 100 > 80 ? '<button class="btn btn-success">Accuracy: ' + modalData.accuracy.score * 100 +
-                '%</button>' : '<button class="btn btn-danger">Accuracy Low</button>'
+            ${
+              modalData.accuracy.score * 100 > 80
+                ? '<button class="btn btn-success">Accuracy: ' +
+                  modalData.accuracy.score * 100 +
+                  "%</button>"
+                : '<button class="btn btn-danger">Accuracy Low</button>'
             }
 
         </div>
         <div class="card-body">
-            <h5 class="card-title text-center">${modalData.input_output_examples[0].input}</h5>
-            <p class="card-text text-center">${modalData.input_output_examples[0].output}</p>
+            <h5 class="card-title text-center">${
+              modalData.input_output_examples[0].input
+            }</h5>
+            <p class="card-text text-center">${
+              modalData.input_output_examples[0].output
+            }</p>
 
         </div>
 
-    `
-    const priceItem= document.getElementById('price')
-    priceItem.innerHTML = `
+    `;
+  const priceItem = document.getElementById("price");
+  priceItem.innerHTML = `
             <div class="col">
                 <div class="card py-3">
                     <div class="card-body p-4  p-lg-1 text-center">
@@ -140,17 +150,23 @@ const modalData = (modalData) => {
                     </div>
                 </div>
             </div>
-    `
-    const feature = document.getElementById('feature')
-    feature.innerHTML = `
+    `;
+  const feature = document.getElementById("feature");
+  feature.innerHTML = `
                     <div class="col">
                         <div class="card">
                              <div class="card-body p-1">
                                 <h2 class="card-title fw-bold">Feature</h2>
                                 <ul>
-                                    <li>${modalData.features[1].feature_name} </li>
-                                    <li>${modalData.features[2].feature_name} </li>
-                                    <li>${modalData.features[3].feature_name} </li>
+                                    <li>${
+                                      modalData.features[1].feature_name
+                                    } </li>
+                                    <li>${
+                                      modalData.features[2].feature_name
+                                    } </li>
+                                    <li>${
+                                      modalData.features[3].feature_name
+                                    } </li>
                                 </ul>
                             </div>
                         </div>
@@ -161,13 +177,46 @@ const modalData = (modalData) => {
                             <div class="card-body p-1 feature">
                                 <h2 class="card-title fw-bold">Integration</h2>
                                  <ul>
-                                    <li>${modalData.integrations[0] ? modalData.integrations[0] : '<b class="text-danger">No Data Found</b>'} </li>
-                                    <li>${modalData.integrations[1] ? modalData.integrations[1] : '<b class="text-danger">No Data Found</b>'} </li>
-                                     <li>${modalData.integrations[2] ? modalData.integrations[2] : '<b class="text-danger">No Data Found</b>'} </li>
+                                    <li>${
+                                      modalData.integrations[0]
+                                        ? modalData.integrations[0]
+                                        : '<b class="text-danger">No Data Found</b>'
+                                    } </li>
+                                    <li>${
+                                      modalData.integrations[1]
+                                        ? modalData.integrations[1]
+                                        : '<b class="text-danger">No Data Found</b>'
+                                    } </li>
+                                     <li>${
+                                       modalData.integrations[2]
+                                         ? modalData.integrations[2]
+                                         : '<b class="text-danger">No Data Found</b>'
+                                     } </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-    `
-}
+    `;
+};
+document.getElementById("sort-by-date").addEventListener("click", function () {
+  const sortByDate = async () => {
+    const url = `https://openapi.programming-hero.com/api/ai/tools`;
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      const sortData = data.data.tools;
+      sortData.sort(
+        (a, b) => new Date(a.published_in) - new Date(b.published_in)
+      );
+      const seeMoreSection = document.getElementById("see-more-section");
+      if (sortData.length > 6) {
+        seeMoreSection.classList.remove("d-none");
+        displayData(sortData);
+      }
+    } catch (error) {
+      console.log("Error!!!!" + error);
+    }
+  };
+  sortByDate();
+});
 loadData();
