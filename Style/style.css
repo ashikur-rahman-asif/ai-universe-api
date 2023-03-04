@@ -1,0 +1,26 @@
+.modal-header{
+    position: absolute;
+    margin-left: 80%;
+}
+#right-card{
+    position: relative;
+}
+.accuracy-section{
+    position: absolute;
+    margin-left: 68.7% ;
+}
+@media screen and (max-width:576px) {
+    .accuracy-section {
+        margin-left: 55%;
+    }
+
+    .modal-header {
+        position: relative;
+        margin-left: 68.7% ;
+
+    }
+    .modal-header button{
+        background-color: red;
+    }
+}
+

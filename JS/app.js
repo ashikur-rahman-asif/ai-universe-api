@@ -1,6 +1,6 @@
 // load data from api
 const loadData = async () => {
-    toggleSpinner(true);
+  toggleSpinner(true);
   const url = `https://openapi.programming-hero.com/api/ai/tools`;
   try {
     const res = await fetch(url);
@@ -70,8 +70,8 @@ const displayData = (data) => {
             </div>
         </div>`;
 
-      divContainer.appendChild(div);
-      toggleSpinner(false);
+    divContainer.appendChild(div);
+    toggleSpinner(false);
   });
 };
 
@@ -103,7 +103,7 @@ const modalData = (modalData) => {
     <img src="${
       modalData.image_link[0] ? modalData.image_link[0] : "Not Found Image"
     }" class="card-img-top rounded" alt="...">
-        <div class="accuracy">
+        <div class="accuracy-section">
             ${
               modalData.accuracy.score * 100 > 80
                 ? '<button class="btn btn-success">Accuracy: ' +
@@ -200,21 +200,21 @@ const modalData = (modalData) => {
                     </div>
     `;
 };
-    const toggleSpinner = (isLoading) => {
-        const loaderSection = document.getElementById("loader");
-            if (isLoading) {
-            loaderSection.classList.remove("d-none");
-        } else {
-        loaderSection.classList.add("d-none");
-    }
+const toggleSpinner = (isLoading) => {
+  const loaderSection = document.getElementById("loader");
+  if (isLoading) {
+    loaderSection.classList.remove("d-none");
+  } else {
+    loaderSection.classList.add("d-none");
+  }
 };
-    document.getElementById("sort-by-date").addEventListener("click", function () {
-        const sortByDate = async () => {
-     const url = `https://openapi.programming-hero.com/api/ai/tools`;
-        try {
-            const res = await fetch(url);
-            const data = await res.json();
-            const sortData = data.data.tools;
+document.getElementById("sort-by-date").addEventListener("click", function () {
+  const sortByDate = async () => {
+    const url = `https://openapi.programming-hero.com/api/ai/tools`;
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      const sortData = data.data.tools;
       sortData.sort(
         (a, b) => new Date(a.published_in) - new Date(b.published_in)
       );
