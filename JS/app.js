@@ -198,13 +198,21 @@ const modalData = (modalData) => {
                     </div>
     `;
 };
-document.getElementById("sort-by-date").addEventListener("click", function () {
-  const sortByDate = async () => {
-    const url = `https://openapi.programming-hero.com/api/ai/tools`;
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      const sortData = data.data.tools;
+    const toggleSpinner = (isLoading) => {
+        const loaderSection = document.getElementById("loader");
+            if (isLoading) {
+            loaderSection.classList.remove("d-none");
+        } else {
+        loaderSection.classList.add("d-none");
+    }
+};
+    document.getElementById("sort-by-date").addEventListener("click", function () {
+        const sortByDate = async () => {
+     const url = `https://openapi.programming-hero.com/api/ai/tools`;
+        try {
+            const res = await fetch(url);
+            const data = await res.json();
+            const sortData = data.data.tools;
       sortData.sort(
         (a, b) => new Date(a.published_in) - new Date(b.published_in)
       );
